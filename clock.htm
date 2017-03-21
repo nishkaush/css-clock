@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style media="screen">
+        body {
+            width: 100%;
+            height: 700px;
+            background: linear-gradient(#FFC837, #FF8008);
+            display: flex;
+            flex-flow: column;
+        }
+
+        .clock-face {
+            border: 40px double white;
+            width: 350px;
+            height: 50%;
+            border-radius: 50%;
+            margin: auto;
+            position: relative;
+            display: flex;
+            transition: border-color 1s;
+        }
+
+        .blackdot {
+            position: relative;
+            margin: auto;
+            background-color: #021B79;
+            height: 10%;
+            width: 10%;
+            border-radius: 80%;
+            z-index: 4;
+        }
+
+        .hour {
+            width: 30%;
+            height: 4%;
+            border: 2px solid #021B79;
+            position: absolute;
+            top: 46%;
+            left: 19%;
+            transform-origin: right;
+            border-radius: 20px;
+            /*background-color: #021B79;*/
+        }
+
+        .min {
+            width: 40%;
+            height: 3%;
+            border: 2px solid #021B79;
+            position: absolute;
+            top: 46%;
+            left: 8%;
+            transform-origin: right;
+            border-radius: 20px;
+            /*background-color: #021B79;*/
+        }
+
+        .sec {
+            width: 42%;
+            /*height: 2%;*/
+            border: 2px double #021B79;
+            position: absolute;
+            top: 49%;
+            left: 8%;
+            transform-origin: right;
+            border-radius: 20px;
+        }
+
+        .time-display {
+            width: 12%;
+            height: 10%;
+            margin: auto;
+            /*border: 1px solid #000;*/
+            display: flex;
+        }
+
+        span {
+            flex: 0.9;
+            height: 100%;
+            font-size: 3em;
+            letter-spacing: 2px;
+            color: #021B79;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="clock-face">
+        <div class="hour"></div>
+        <div class="min"></div>
+        <div class="sec"></div>
+        <div class="blackdot"></div>
+    </div>
+
+    <div class="time-display">
+        <span class="hour-time"></span>
+        <span class="min-time">:</span>
+        <span class="sec-time">:</span>
+    </div>
+
+    <script type="text/javascript">
+        const hourDisplay = document.querySelector(".hour-time");
+        const minDisplay = document.querySelector(".min-time");
+        const secDisplay = document.querySelector(".sec-time");
+        const clockFace = document.querySelector(".clock-face");
+
+        setInterval(secfun, 1000);
+        // rotate seconds hand by 6deg/sec
+        var color = 0; //chaging border color every second.
+
+        function secfun() {
+            color += 40; //chaging border color every second.
+            secDisplay.innerHTML = "";
+            var sec = document.querySelector(".sec");
+            var s = new Date().getSeconds();
+            sec.style.transform = (`rotate(${(s*6)+90}deg)`);
+            if (s < 10) {
+                secDisplay.insertAdjacentHTML("beforeend", `:0${s}`);
+                clockFace.style.borderColor = `hsl(${s+color},50%,50%)`;
+            } else {
+                secDisplay.insertAdjacentHTML("beforeend", `:${s}`);
+                clockFace.style.borderColor = `hsl(${s+color},50%,50%)`;
+            }
+        }
+
+        setInterval(minfun, 1000);
+        // rotate minute hand by 6deg/min
+        function minfun() {
+            minDisplay.innerHTML = "";
+            var min = document.querySelector(".min");
+            var m = new Date().getMinutes();
+            min.style.transform = (`rotate(${(m*0.1*60)+90}deg)`);
+            if (m < 10) {
+                minDisplay.insertAdjacentHTML("beforeend", `:0${m}`);
+            } else {
+                minDisplay.insertAdjacentHTML("beforeend", `:${m}`);
+            }
+        }
+
+        setInterval(hrfun, 1000);
+        // rotate hour hand by 30deg/60min or 0.5deg/minute
+        function hrfun() {
+            hourDisplay.innerHTML = "";
+            var hr = document.querySelector(".hour");
+            var h = new Date().getHours();
+
+            if (h <= 12) {
+                hr.style.transform = (`rotate(${h*3600*0.5/60}deg)`);
+                hourDisplay.insertAdjacentHTML("beforeend", `0${h}`);
+            } else {
+                hr.style.transform = (`rotate(${((h-12)*3600*0.5/60)+90}deg)`);
+                hourDisplay.insertAdjacentHTML("beforeend", `${h}`);
+            }
+
+        }
+    </script>
+</body>
+
+</html>
